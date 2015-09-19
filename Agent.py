@@ -12,7 +12,8 @@
 #from PIL import Image
 import os
 import itertools
-import inspect 
+import inspect
+
 class Agent:
     # The default constructor for your Agent. Make sure to execute any
     # processing necessary before your Agent starts solving problems here.
@@ -46,16 +47,60 @@ class Agent:
     # Make sure to return your answer *as an integer* at the end of Solve().
     # Returning your answer as a string may cause your program to crash.
     def Solve(self,problem):
-        print "Now working on " + problem.name
-        print problem.problemType
+        # problem.name - string containing the name of the problem
+	# problem.problemType - string containing the type of problem
+	# problem.hasVisual - boolean on if pictures included
+	# problem.hasVerbal - boolean on if text included
+	# problem.figures - dictionary for figures & solutions
+	
+        #Begin Solving
+        print "Working on problem: " + problem.problemType
 
-        A = problem.figures
-        print A
-        
-        
-       # A_objs = A.objects
-        #print A.name
-        #print type(A)
-        #print type(A_objs)
-        
-        return -1
+        #Gather all frames within a 2x2 problem
+        if problem.problemType == "2x2":
+            A = problem.figures['A']
+            B = problem.figures['B']
+            C = problem.figures['C']
+            solutionOne = problem.figures['1']
+            solutionTwo = problem.figures['2']
+            solutionThree = problem.figures['3']
+            solutionFour = problem.figures['4']
+	    solutionFive = problem.figures['5']
+            solutionSix = problem.figures['6']
+
+
+            #Verify that we are working on a verbal problem
+            if problem.hasVerbal:
+                #build a Frame
+                for obj in list(A.objects):
+                    FrameA = A.objects[obj].attributes
+
+                for obj in list(B.objects):
+                    FrameB = B.objects[obj].attributes
+
+                for obj in list(C.objects):
+                    FrameC = C.objects[obj].attributes
+
+                for obj in list(solutionOne.objects):
+                    Answer1 = solutionOne.objects[obj].attributes
+
+                for obj in list(solutionTwo.objects):
+                    Answer2 = solutionTwo.objects[obj].attributes
+  
+                for obj in list(solutionThree.objects):
+                    Answer3 = solutionThree.objects[obj].attributes
+    
+                #print FrameA['shape']
+                #print FrameB['shape']
+
+                if cmp(FrameA,FrameB) == 0: #one-one-correspondance
+                    ValueAB = 5
+
+                if cmp(FrameB, Answer1) == 0:
+                    return 1
+
+                if cmp(FrameB, Answer2) == 0:
+                    return 3
+               
+        if problem.problemType == "3x3": 
+            return -1
