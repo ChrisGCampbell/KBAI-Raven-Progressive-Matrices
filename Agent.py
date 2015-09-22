@@ -59,50 +59,55 @@ class Agent:
 
         ##compares attributes between objects
         ##Rules governing how to handle matches
-        def ProductionSystemProcedural( FrameList ):
-
+        def ProductionSystemProcedural():
+            
             
            # print len(FrameList['B']['b']) number of values
 
             #print FrameList
             
-            if len(FrameList['A']['a']) == len(FrameList['B']['b']): #one-one-correspondance
+            print len(AFrame)
+            
+            if len(AFrame) == len(BFrame): #one-one-correspondance
                     relationshipAB = "one-to-one"
+                    print relationshipAB
+                    return relationshipAB
+            
+            if len(AFrame) > len(BFrame):
+                    relationshipAB = "deletion"
+                    len(AFrame) < len(BFrame)
                     return relationshipAB
 
-            if cmp(FrameList[0][1], FrameList[0][2]) == 0:
-                    relationshipAB = "two-to-one"
-                    return relationshipAB
-
-            if cmp(FrameList[0][1], FrameList[0][2]) == 0:
-                    relationshipAB = "Three-to-one"
-                    return relationshipAB
+            if len(AFrame) < len(BFrame):
+                    relationshipAB = "addition"
+                    len(AFrame) < len(BFrame)
+                    return relationshipAB 
         
 
-        def ProductionSystemTransformation(relationship,FrameList):
-            if relationship == "one-to-one":
+        def ProductionSystemTransformation(relationshipAB):
+            if relationshipAB == "one-to-one":
                 return "same"
                 
 
         def GeneraterTester(transformationResult):
             if transformationResult == "same":
                 
-                if cmp(FrameList['C']['c'], FrameList[1]['d']) == 0:
+                if len(CFrame) == len(one):
                     return 1
 
-                if cmp(FrameList['C']['c'], FrameList[2]['e']) == 0:
+                if len(CFrame) == len(two):
                     return 2
 
-                if cmp(FrameList['C']['c'], FrameList[3]['f']) == 0:
+                if len(CFrame) == len(three):
                     return 3
 
-                if cmp(FrameList['C']['c'], FrameList[4]['g']) == 0:
+                if len(CFrame) == len(four):
                     return 4
 
-                if cmp(FrameList['C']['c'], FrameList[5]['h']) == 0:
+                if len(CFrame) == len(five):
                     return 5
 
-                if cmp(FrameList['C']['c'], FrameList[6]['i']) == 0:
+                if len(CFrame) == len(six):
                     return 6
             else:
                 return 0
@@ -149,7 +154,7 @@ class Agent:
         four = {}
         five = {}
         six = {}
-            
+           
         if problem.problemType == "2x2":
             A = problem.figures['A']
             B = problem.figures['B']
@@ -161,16 +166,13 @@ class Agent:
 	    solutionFive = problem.figures['5']
             solutionSix = problem.figures['6']
 
+            ## build dictionary of each Frame
             buildFrame()
             
-              
-            print one
-               
-        
         
         if problem.hasVerbal: #Verify that we are working on a verbal problem
-            relationship = ProductionSystemProcedural()
-            transformationResult = ProductionSystemTransformation(relationship,FrameList)
+            relationshipAB = ProductionSystemProcedural()
+            transformationResult = ProductionSystemTransformation(relationshipAB)
             answer = GeneraterTester(transformationResult)
             
             ## to print items in a dictionary - print FrameList[0]
