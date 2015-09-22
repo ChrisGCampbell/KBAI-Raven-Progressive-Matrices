@@ -54,9 +54,250 @@ class Agent:
 	# problem.figures - dictionary for figures & solutions
 	
         #Begin Solving
-        print "Working on problem: " + problem.problemType
+        print "Working on problem: " + problem.problemType + " " + problem.name
+        
 
-        #Gather all frames within a 2x2 problem
+        def calculateIndex(i, j):
+                
+                if i == 1:
+                    j='b'#indexes relating to object attributes
+                    i=i+1
+                    return (i,j)
+                if i == 2:
+                    j='c'
+                    i=i+1
+                    return (i,j)
+
+                if i == 3:
+                    j = 'd'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 4:
+                    j = 'e'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 5:
+                    j = 'f'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 6:
+                    j = 'g'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 7:
+                    j = 'h'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 8:
+                    j = 'i'
+                    i=i+1
+                    return (i,j)
+                    
+                if i == 9:
+                    j = 'j'
+                    i=i+1
+                    return (i,j)
+
+                if i == 10:
+                    j = 'k'
+                    i=i+1
+                    return (i,j)
+
+                if i == 11:
+                    j = 'l'
+                    i=i+1
+                    return (i,j)
+
+                if i == 12:
+                    j = 'm'
+                    i=i+1
+                    return (i,j)
+
+                if i == 13:
+                    j = 'n'
+                    i=i+1
+                    return (i,j)
+
+                if i == 14:
+                    j = 'o'
+                    i=i+1
+                    return (i,j)
+
+                if i == 15:
+                    j = 'p'
+                    i=i+1
+                    return (i,j)
+
+                if i == 16:
+                    j = 'q'
+                    i=i+1
+                    return (i,j)
+
+                if i == 17:
+                    j = 'r'
+                    i=i+1
+                    return (i,j)
+
+                if i == 18:
+                    j = 's'
+                    i=i+1
+                    return (i,j)
+
+                if i == 19:
+                    j = 't'
+                    i=i+1
+                    return (i,j)
+            
+        #Gather all frames within a 2x2 problems
+        def buildFrame(A, B, C, sol1, sol2, sol3, sol4, sol5, sol6):
+            #build a Frames
+            frameObjectsA={} #dictionary to hold objects
+            frameObjectsB={}
+            frameObjectsC={}
+            solutionObjects1={}
+            solutionObjects2={}
+            solutionObjects3={}
+            solutionObjects4={}
+            solutionObjects5={}
+            solutionObjects6={}
+            
+            
+            i=1
+            j='a'
+            
+            for obj in list(A.objects):
+                frameObjectsA[j] = A.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+
+                print i
+                print j
+                
+            
+                #print A.objects[obj].attributes #print attributes in dictionary
+                #print " "
+                #for keys, values in FrameA.items():
+                 #   print(keys)
+                  #  print(values)
+
+                #print FrameA #to get all values from dictionary
+               # print FrameA.keys()
+            #print frameObjects[1]
+           # print frameObjects[2]
+           
+            for obj in list(B.objects):
+                frameObjectsB[j] = B.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+                    
+            for obj in list(C.objects):
+                frameObjectsC[j] = C.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+                    
+            for obj in list(sol1.objects):
+                solutionObjects1[j] = sol1.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+            for obj in list(sol2.objects):
+                solutionObjects2[j] = sol2.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+  
+            for obj in list(sol3.objects):
+                solutionObjects3[j] = sol3.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+
+            for obj in list(sol4.objects):
+                solutionObjects4[j] = sol4.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+
+            for obj in list(sol5.objects):
+                solutionObjects5[j] = sol5.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+
+            for obj in list(sol6.objects):
+                solutionObjects6[j] = sol6.objects[obj].attributes
+                answer = calculateIndex(i, j)
+                i = answer[0]
+                j = answer[1]
+
+
+            frameObjectList = frameObjectsA, frameObjectsB, frameObjectsC, solutionObjects1,solutionObjects2, solutionObjects3,solutionObjects4, solutionObjects5, solutionObjects6
+
+            return frameObjectList
+
+        ##compares attributes between objects
+        ##Rules governing how to handle matches
+        def ProductionSystemProcedural( FrameList ):
+
+            print FrameList
+           
+            if cmp(FrameList[0][1],FrameList[0][2]) == 0: #one-one-correspondance
+                    relationshipAB = "one-to-one"
+                    return relationshipAB
+
+            if cmp(FrameList[0][1], FrameList[0][2]) == 0:
+                    relationshipAB = "two-to-one"
+                    return relationshipAB
+
+            if cmp(FrameList[0][1], FrameList[0][2]) == 0:
+                    relationshipAB = "Three-to-one"
+                    return relationshipAB
+
+
+        def ProductionSystemTransformation(relationship,FrameList):
+            if relationship == "one-to-one":
+                return "same"
+                
+
+        def GeneraterTester(transformationResult):
+            if transformationResult == "same":
+                
+                if cmp(FrameList[2], FrameList[3]) == 0:
+                    return 1
+
+                if cmp(FrameList[2], FrameList[4]) == 0:
+                    return 2
+
+                if cmp(FrameList[2], FrameList[5]) == 0:
+                    return 3
+
+                if cmp(FrameList[2], FrameList[6]) == 0:
+                    return 4
+
+                if cmp(FrameList[2], FrameList[7]) == 0:
+                    return 5
+
+                if cmp(FrameList[2], FrameList[8]) == 0:
+                    return 6
+            else:
+                return 0
+
+        ## Begin Program ##
+        
         if problem.problemType == "2x2":
             A = problem.figures['A']
             B = problem.figures['B']
@@ -68,39 +309,19 @@ class Agent:
 	    solutionFive = problem.figures['5']
             solutionSix = problem.figures['6']
 
-
-            #Verify that we are working on a verbal problem
-            if problem.hasVerbal:
-                #build a Frame
-                for obj in list(A.objects):
-                    FrameA = A.objects[obj].attributes
-
-                for obj in list(B.objects):
-                    FrameB = B.objects[obj].attributes
-
-                for obj in list(C.objects):
-                    FrameC = C.objects[obj].attributes
-
-                for obj in list(solutionOne.objects):
-                    Answer1 = solutionOne.objects[obj].attributes
-
-                for obj in list(solutionTwo.objects):
-                    Answer2 = solutionTwo.objects[obj].attributes
-  
-                for obj in list(solutionThree.objects):
-                    Answer3 = solutionThree.objects[obj].attributes
-    
-                #print FrameA['shape']
-                #print FrameB['shape']
-
-                if cmp(FrameA,FrameB) == 0: #one-one-correspondance
-                    ValueAB = 5
-
-                if cmp(FrameB, Answer1) == 0:
-                    return 1
-
-                if cmp(FrameB, Answer2) == 0:
-                    return 3
-               
+        
+        
+        if problem.hasVerbal: #Verify that we are working on a verbal problem
+            FrameList = buildFrame(A, B, C, solutionOne, solutionTwo, solutionThree, solutionFour, solutionFive, solutionSix)
+            relationship = ProductionSystemProcedural(FrameList)
+            transformationResult = ProductionSystemTransformation(relationship,FrameList)
+            answer = GeneraterTester(transformationResult)
+            
+            ## to print items in a dictionary - print FrameList[0]
+            ##print type(FrameList[0])
+            #print FrameList[0][1]
+            print " "
+            return answer
+        
         if problem.problemType == "3x3": 
             return -1

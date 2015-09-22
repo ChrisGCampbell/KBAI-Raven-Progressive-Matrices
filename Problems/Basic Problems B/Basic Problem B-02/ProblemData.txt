@@ -94,7 +94,7 @@ C
 		shape:square
 		size:very large
 		fill:no
-	f
+	r
 		shape:circle
 		size:small
 		fill:yes
