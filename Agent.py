@@ -13,6 +13,8 @@
 import os
 import itertools
 import inspect
+import copy
+import random
 
 class Agent:
     # The default constructor for your Agent. Make sure to execute any
@@ -64,179 +66,102 @@ class Agent:
             
            # print len(FrameList['B']['b']) number of values
         
-            if len(AFrame) == len(BFrame): #one-one-correspondance
-                    relationshipAB = "one-to-one"
-                    print relationshipAB, "procedural"
-                    return relationshipAB
-            
-            elif len(AFrame) > len(BFrame): #deletion
-                    relationshipAB = "deletion"
-                    len(AFrame) < len(BFrame)
-                    return relationshipAB
-
-            elif len(AFrame) < len(BFrame): #addition
-                    relationshipAB = "addition"
-                    len(AFrame) < len(BFrame)
-                    return relationshipAB 
-            
-            else:                           # undefined
-                relationshipAB = "undefined"
-                return relationshipAB
+            if len(AFrame) == 1 and len(BFrame) ==1:
+                return "one-to-one"
+                
         
         
-        def ProductionSystemTransformation(relationshipAB):
-            if relationshipAB == "one-to-one":
-                print relationshipAB, "transformation"
+        def ProductionSystemTransformation(relationshipAB, DFrame):
+            values={}
+            tempA={}
+            tempB={}
+            temp2={}
+            diff={}
+            if len(AFrame)==1 and len(BFrame)==1: #if we are working on 1 object in each Frame
+                if AFrame.values() == BFrame.values() and relationshipAB == "one-to-one":
+                    for obj in list(C.objects): #generate a possible answer
+                        values[C.objects[obj].name] = C.objects[obj].attributes
+                    return values
 
-                if AFrame.values() == BFrame.values(): #there are 1 object in each FrameA(a), FrameB(b)
-                    print "one-object-same"
-                    return "one-object-same"
-                
-                
-                elif len(AFrame) == 2 and len(BFrame) == 2: #if there are 2 objects in the FrameA(a,b), FrameB(c,d)
-                        if AFrame.values() == BFrame.values(): #all attributes are the same
-                           print "two-objects-same"
-                           return "two-objects-same"
-                
+                if AFrame.values() != BFrame.values(): #there is a change between AFrame and BFrame
+                    for obj in list(A.objects):
+                        tempA[A.objects[obj].name] = A.objects[obj].attributes
+                    for obj in list(B.objects):
+                        tempB[B.objects[obj].name] = B.objects[obj].attributes
+                    
+                    count = sum(len(v) for v in tempA.itervalues())#if FrameA and FrameB have the same length
+                    count = sum(len(v) for v in tempA.itervalues())#if FrameA and FrameB have the same length
+                    if count == count:#if FrameA and FrameB have the same length find the difference in values
+                        Avalue = tempA.values() #change to list data structure
+                        for item in Avalue:
+                            AitemValues = item.values()
 
-                        if AFrame.values() != BFrame.values(): #attributes are different
-                            
-                                if AFrame['a']['shape'] != BFrame['c']['shape'] or AFrame['b']['shape'] != BFrame['d']['shape']:
-                                    print "shape-change"
-                                    return "shape-change"
-                                elif AFrame['a']['size'] != BFrame['c']['size'] or AFrame['b']['size'] != BFrame['d']['size']:
-                                    print "size-change"
-                                    return "size-change"
-                                elif AFrame['a']['fill'] != BFrame['c']['fill'] or AFrame['b']['fill'] != BFrame['d']['fill']:
-                                    print "fill-change"
-                                    return "fill-change"
-                                try:
-                                    if AFrame['a']['angle'] != BFrame['c']['angle']:
-                                        print "a-c-angel-change"
-                                        return "a-c-angle-change"
-                                except KeyError:
-                                    pass
-                                try:
-                                    if AFrame['b']['angle'] != BFrame['d']['angle']:
-                                        print "b-d-angel-change"
-                                        return "b-d-angle-change"
-                                except KeyError:
-                                    pass
-                                try:
-                                    if AFrame['a']['inside'] != BFrame['c']['inside']:
-                                        print "a-c-inside-change"
-                                        return "a-c-inside-change"
-                                except KeyError:
-                                    pass
-                                try:
-                                    if AFrame['b']['inside'] != BFrame['d']['inside']:
-                                        print "b-d-inside-change"
-                                        return "b-d-inside-change"
-                                except KeyError:
-                                    pass
-                           
-                else:
-                    print "no-rule"
-                    return "no-rule"
-            
+                        #print AitemValues
 
-        def GeneraterTester(transformationResult):
-            if transformationResult == "one-object-same":
-                
-                if CFrame.values() == one.values():
-                    return 1
+                        #print AitemValues[0]
 
-                elif CFrame.values() == two.values():
-                    return 2
+                        Bvalue = tempB.values() #change to list data structure
+                        for item in Bvalue:
+                            BitemValues = item.values()
 
-                elif CFrame.values() == three.values():
-                    return 3
+                        #print BitemValues, "checkpoint"
 
-                elif CFrame.values() == four.values():
-                    return 4
+                        #print AitemValues[0], "checkpoint"
+                        
+                        for x in range(0,count-1):
+                          if AitemValues[x] != BitemValues[x]:
+                              changeValue = BitemValues[x]
 
-                elif CFrame.values() == five.values():
-                    return 5
+                        #print changeValue, "change value"
+                        #print nameValue, "name value"
+                        #for item1 in value:
+                        #    time =+ item1
+                        #print item1.values()
+                        #print item1.keys()
+                        #or key, val in tempA.items():
+                          #  temp2 = tempA[key][val]
+                           # print temp2
+                            #for key, val in temp2.values():
+                             #   print temp2[key].values()
+                            #print temp
+                            #print temp.keys()
+                            #print temp.values()
+                        
+                    print count
+                    print "diff"
+                    print diff.values
+                    return values
 
-                elif CFrame.values() == six.values():
-                    return 6
-                else:
-                    return 8
 
-            if transformationResult == "two-object-same":
-                
-                if CFrame.values() == one.values():
-                    return 1
+            elif len(AFrame)==2 and len(BFrame)==2: #if we are working on 1 object in each Frame
+                return values
 
-                elif CFrame.values() == two.values():
-                    return 2
-
-                elif CFrame.values() == three.values():
-                    return 3
-
-                elif CFrame.values() == four.values():
-                    return 4
-
-                elif CFrame.values() == five.values():
-                    return 5
-
-                elif CFrame.values() == six.values():
-                    return 6
-                else:
-                    return 8
-
-            
-            if transformationResult == "shape-change":
-                if len(AFrame) == 2 and len(BFrame) == 2:
-                    try:
-                        if AFrame['a']['shape'] != BFrame['c']['shape']:
-                            shape = BFrame['c']['shape']
-                            DFrame = CFrame.values
-                            DFrame['e']['shape'] = shape
-                            if DFrame.values == one.values():
-                                return 1
-                            elif DFrame.values == two.values():
-                                return 2
-                            elif DFrame.values == three.values():
-                                return 3
-                            elif DFrame.values == four.values():
-                                return 4
-                            elif DFrame.values == five.values():
-                                return 5
-                            elif DFrame.values == six.values():
-                                return 6
-                            else:-1
-                    except KeyError:
-                            pass
-                            
-
-                    try:
-                        if AFrame['b']['shape'] != BFrame['d']['shape']:
-                            shape = BFrame['c']['shape']
-                            DFrame = CFrame.values
-                            DFrame['f']['shape'] = shape
-                            if DFrame.values == one.values():
-                                return 1
-                            elif DFrame.values == two.values():
-                                return 2
-                            elif DFrame.values == three.values():
-                                return 3
-                            elif DFrame.values == four.values():
-                                return 4
-                            elif DFrame.values == five.values():
-                                return 5
-                            elif DFrame.values == six.values():
-                                return 6
-                            else:
-                                -1
-                    except KeyError:
-                            pass
-            if transformationResult == "KeyError":
-                return 8
-            if transformationResult == "undefined":
-                return 8
             else:
-                return 8
+                return values
+
+        def GeneraterTester(possibleAnswer):
+                #test answers
+                if possibleAnswer.values() == one.values():
+                    return 1
+
+                elif possibleAnswer.values() == two.values():
+                    return 2
+
+                elif possibleAnswer.values() == three.values():
+                    return 3
+
+                elif possibleAnswer.values() == four.values():
+                    return 4
+
+                elif possibleAnswer.values() == five.values():
+                    return 5
+
+                elif possibleAnswer.values() == six.values():
+                    return 6
+                else:
+                    return random.randint(1,6)
+
+            
 
         def buildFrame():
             
@@ -266,6 +191,9 @@ class Agent:
 
             for obj in list(solutionSix.objects):
                 six[solutionSix.objects[obj].name] = solutionSix.objects[obj].attributes
+
+            for obj in list(C.objects):
+                DFrame[C.objects[obj].name] = C.objects[obj].attributes
 
 
             
@@ -300,9 +228,9 @@ class Agent:
         
         if problem.hasVerbal: #Verify that we are working on a verbal problem
             relationshipAB = ProductionSystemProcedural()
-            transformationResult = ProductionSystemTransformation(relationshipAB)
-            answer = GeneraterTester(transformationResult)
-            print "final ", answer
+            possibleAnswer = ProductionSystemTransformation(relationshipAB, DFrame)
+            answer = GeneraterTester(possibleAnswer)
+            print "answer", answer
             
             ## to print items in a dictionary - print FrameList[0]
             ##print type(FrameList[0])
