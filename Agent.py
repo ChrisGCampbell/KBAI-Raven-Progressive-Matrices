@@ -63,54 +63,180 @@ class Agent:
             
             
            # print len(FrameList['B']['b']) number of values
-
-            #print FrameList
-            
-            print len(AFrame)
-            
+        
             if len(AFrame) == len(BFrame): #one-one-correspondance
                     relationshipAB = "one-to-one"
-                    print relationshipAB
+                    print relationshipAB, "procedural"
                     return relationshipAB
             
-            if len(AFrame) > len(BFrame):
+            elif len(AFrame) > len(BFrame): #deletion
                     relationshipAB = "deletion"
                     len(AFrame) < len(BFrame)
                     return relationshipAB
 
-            if len(AFrame) < len(BFrame):
+            elif len(AFrame) < len(BFrame): #addition
                     relationshipAB = "addition"
                     len(AFrame) < len(BFrame)
                     return relationshipAB 
+            
+            else:                           # undefined
+                relationshipAB = "undefined"
+                return relationshipAB
         
-
+        
         def ProductionSystemTransformation(relationshipAB):
             if relationshipAB == "one-to-one":
-                return "same"
+                print relationshipAB, "transformation"
+
+                if AFrame.values() == BFrame.values(): #there are 1 object in each FrameA(a), FrameB(b)
+                    print "one-object-same"
+                    return "one-object-same"
                 
+                
+                elif len(AFrame) == 2 and len(BFrame) == 2: #if there are 2 objects in the FrameA(a,b), FrameB(c,d)
+                        if AFrame.values() == BFrame.values(): #all attributes are the same
+                           print "two-objects-same"
+                           return "two-objects-same"
+                
+
+                        if AFrame.values() != BFrame.values(): #attributes are different
+                            
+                                if AFrame['a']['shape'] != BFrame['c']['shape'] or AFrame['b']['shape'] != BFrame['d']['shape']:
+                                    print "shape-change"
+                                    return "shape-change"
+                                elif AFrame['a']['size'] != BFrame['c']['size'] or AFrame['b']['size'] != BFrame['d']['size']:
+                                    print "size-change"
+                                    return "size-change"
+                                elif AFrame['a']['fill'] != BFrame['c']['fill'] or AFrame['b']['fill'] != BFrame['d']['fill']:
+                                    print "fill-change"
+                                    return "fill-change"
+                                try:
+                                    if AFrame['a']['angle'] != BFrame['c']['angle']:
+                                        print "a-c-angel-change"
+                                        return "a-c-angle-change"
+                                except KeyError:
+                                    pass
+                                try:
+                                    if AFrame['b']['angle'] != BFrame['d']['angle']:
+                                        print "b-d-angel-change"
+                                        return "b-d-angle-change"
+                                except KeyError:
+                                    pass
+                                try:
+                                    if AFrame['a']['inside'] != BFrame['c']['inside']:
+                                        print "a-c-inside-change"
+                                        return "a-c-inside-change"
+                                except KeyError:
+                                    pass
+                                try:
+                                    if AFrame['b']['inside'] != BFrame['d']['inside']:
+                                        print "b-d-inside-change"
+                                        return "b-d-inside-change"
+                                except KeyError:
+                                    pass
+                           
+                else:
+                    print "no-rule"
+                    return "no-rule"
+            
 
         def GeneraterTester(transformationResult):
-            if transformationResult == "same":
+            if transformationResult == "one-object-same":
                 
-                if len(CFrame) == len(one):
+                if CFrame.values() == one.values():
                     return 1
 
-                if len(CFrame) == len(two):
+                elif CFrame.values() == two.values():
                     return 2
 
-                if len(CFrame) == len(three):
+                elif CFrame.values() == three.values():
                     return 3
 
-                if len(CFrame) == len(four):
+                elif CFrame.values() == four.values():
                     return 4
 
-                if len(CFrame) == len(five):
+                elif CFrame.values() == five.values():
                     return 5
 
-                if len(CFrame) == len(six):
+                elif CFrame.values() == six.values():
                     return 6
+                else:
+                    return 8
+
+            if transformationResult == "two-object-same":
+                
+                if CFrame.values() == one.values():
+                    return 1
+
+                elif CFrame.values() == two.values():
+                    return 2
+
+                elif CFrame.values() == three.values():
+                    return 3
+
+                elif CFrame.values() == four.values():
+                    return 4
+
+                elif CFrame.values() == five.values():
+                    return 5
+
+                elif CFrame.values() == six.values():
+                    return 6
+                else:
+                    return 8
+
+            
+            if transformationResult == "shape-change":
+                if len(AFrame) == 2 and len(BFrame) == 2:
+                    try:
+                        if AFrame['a']['shape'] != BFrame['c']['shape']:
+                            shape = BFrame['c']['shape']
+                            DFrame = CFrame.values
+                            DFrame['e']['shape'] = shape
+                            if DFrame.values == one.values():
+                                return 1
+                            elif DFrame.values == two.values():
+                                return 2
+                            elif DFrame.values == three.values():
+                                return 3
+                            elif DFrame.values == four.values():
+                                return 4
+                            elif DFrame.values == five.values():
+                                return 5
+                            elif DFrame.values == six.values():
+                                return 6
+                            else:-1
+                    except KeyError:
+                            pass
+                            
+
+                    try:
+                        if AFrame['b']['shape'] != BFrame['d']['shape']:
+                            shape = BFrame['c']['shape']
+                            DFrame = CFrame.values
+                            DFrame['f']['shape'] = shape
+                            if DFrame.values == one.values():
+                                return 1
+                            elif DFrame.values == two.values():
+                                return 2
+                            elif DFrame.values == three.values():
+                                return 3
+                            elif DFrame.values == four.values():
+                                return 4
+                            elif DFrame.values == five.values():
+                                return 5
+                            elif DFrame.values == six.values():
+                                return 6
+                            else:
+                                -1
+                    except KeyError:
+                            pass
+            if transformationResult == "KeyError":
+                return 8
+            if transformationResult == "undefined":
+                return 8
             else:
-                return 0
+                return 8
 
         def buildFrame():
             
@@ -130,7 +256,7 @@ class Agent:
                 two[solutionTwo.objects[obj].name] = solutionTwo.objects[obj].attributes
 
             for obj in list(solutionThree.objects):
-                two[solutionThree.objects[obj].name] = solutionThree.objects[obj].attributes
+                three[solutionThree.objects[obj].name] = solutionThree.objects[obj].attributes
 
             for obj in list(solutionFour.objects):
                 four[solutionFour.objects[obj].name] = solutionFour.objects[obj].attributes
@@ -148,13 +274,15 @@ class Agent:
         AFrame = {}
         BFrame = {}
         CFrame = {}
+        DFrame = {}
         one = {}
         two = {}
         three = {}
         four = {}
         five = {}
         six = {}
-           
+        
+        ## Retrieve values from file ##   
         if problem.problemType == "2x2":
             A = problem.figures['A']
             B = problem.figures['B']
@@ -174,6 +302,7 @@ class Agent:
             relationshipAB = ProductionSystemProcedural()
             transformationResult = ProductionSystemTransformation(relationshipAB)
             answer = GeneraterTester(transformationResult)
+            print "final ", answer
             
             ## to print items in a dictionary - print FrameList[0]
             ##print type(FrameList[0])
