@@ -15,6 +15,7 @@ import itertools
 import inspect
 import copy
 import random
+import numbers
 
 class Agent:
     # The default constructor for your Agent. Make sure to execute any
@@ -70,13 +71,14 @@ class Agent:
                 return "one-to-one"
                 
         
-        
+        #Transformation function. Returns a possible answer in the form of a Frame#
         def ProductionSystemTransformation(relationshipAB, DFrame):
             values={}
             tempA={}
             tempB={}
             temp2={}
-            diff={}
+            changeValue=-1
+            
             if len(AFrame)==1 and len(BFrame)==1: #if we are working on 1 object in each Frame
                 if AFrame.values() == BFrame.values() and relationshipAB == "one-to-one":
                     for obj in list(C.objects): #generate a possible answer
@@ -112,6 +114,33 @@ class Agent:
                           if AitemValues[x] != BitemValues[x]:
                               changeValue = BitemValues[x]
 
+                        try:
+                            changeValue = int(changeValue)
+                        except ValueError:
+                            pass
+
+                        if isinstance(changeValue, int):#suggest rotation
+                            for obj in list(C.objects): #generate a possible answer
+                                values[C.objects[obj].name] = C.objects[obj].attributes
+
+                            values['c']['angle']=changeValue
+                            return values
+                    
+                        if isinstance(changeValue, str):
+                            for obj in list(C.objects): #generate a possible answer
+                                values[C.objects[obj].name] = C.objects[obj].attributes
+
+                            if changeValue == "very large" or changeValue == "small" or changeValue == "huge":
+                                values['c']['size'] = changeValue
+                                return values
+                            elif changeValue == "square" or changeValue == "pac-man" or changeValue == "right triangle" or changeValue == "circle":
+                                return values
+                                values['c']['shape'] = changeValue
+                            elif changeValue == "yes" or changeValue == "no" or changeValue == "right-half" or changeValue == "left-half":
+                                return values
+                                values['c']['fill'] = changeValue
+                            else:
+                                return values
                         #print changeValue, "change value"
                         #print nameValue, "name value"
                         #for item1 in value:
@@ -127,10 +156,8 @@ class Agent:
                             #print temp.keys()
                             #print temp.values()
                         
-                    print count
-                    print "diff"
-                    print diff.values
-                    return values
+                    
+                            return values
 
 
             elif len(AFrame)==2 and len(BFrame)==2: #if we are working on 1 object in each Frame
@@ -141,6 +168,7 @@ class Agent:
 
         def GeneraterTester(possibleAnswer):
                 #test answers
+                iteration=0
                 if possibleAnswer.values() == one.values():
                     return 1
 
@@ -159,7 +187,9 @@ class Agent:
                 elif possibleAnswer.values() == six.values():
                     return 6
                 else:
-                    return random.randint(1,6)
+                    #ProductionSystemProcedural()
+                    #if iteration >= 3:
+                        return random.randint(1,6)
 
             
 
@@ -229,6 +259,7 @@ class Agent:
         if problem.hasVerbal: #Verify that we are working on a verbal problem
             relationshipAB = ProductionSystemProcedural()
             possibleAnswer = ProductionSystemTransformation(relationshipAB, DFrame)
+            print possibleAnswer
             answer = GeneraterTester(possibleAnswer)
             print "answer", answer
             
