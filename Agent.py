@@ -160,7 +160,7 @@ class Agent:
                             return values
 
 
-            elif len(AFrame)==2 and len(BFrame)==2: #if we are working on 1 object in each Frame
+            elif len(AFrame)==2 and len(BFrame)==2: #if we are working on 2 objects in each Frame
                 return values
 
             else:
@@ -169,27 +169,59 @@ class Agent:
         def GeneraterTester(possibleAnswer):
                 #test answers
                 iteration=0
-                if possibleAnswer.values() == one.values():
+                tmp = list()
+                tmp1 = list()
+                tmp2 = list()
+                tmp3 = list()
+                tmp4 = list()
+                tmp5 = list()
+                tmp6 = list()
+                print "got here"
+                for k,v in possibleAnswer.items():
+                    tmp.append( (v) )
+                tmp.sort()
+                    
+                for k,v in one.items():
+                    tmp1.append( (v) )
+                tmp1.sort()
+                for k,v in two.items():
+                    tmp2.append( (v) )
+                tmp2.sort()
+                for k,v in three.items():
+                    tmp3.append( (v) )
+                tmp3.sort()
+                for k,v in four.items():
+                    tmp4.append( (v) )
+                tmp4.sort()
+                for k,v in five.items():
+                    tmp5.append( (v) )
+                tmp5.sort()
+                for k,v in six.items():
+                    tmp6.append( (v) )
+                tmp6.sort()
+                
+                if tmp == tmp1:
                     return 1
 
-                elif possibleAnswer.values() == two.values():
+                elif tmp == tmp2:
                     return 2
 
-                elif possibleAnswer.values() == three.values():
+                elif tmp == tmp3:
                     return 3
 
-                elif possibleAnswer.values() == four.values():
+                elif tmp == tmp4:
                     return 4
 
-                elif possibleAnswer.values() == five.values():
+                elif tmp == tmp5:
                     return 5
 
-                elif possibleAnswer.values() == six.values():
+                elif tmp == tmp6:
                     return 6
                 else:
-                    #ProductionSystemProcedural()
+                    ProductionSystemProcedural()
+                    #global iteration
                     #if iteration >= 3:
-                        return random.randint(1,6)
+                    return random.randint(1,6)
 
             
 
