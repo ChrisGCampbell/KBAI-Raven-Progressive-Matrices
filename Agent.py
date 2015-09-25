@@ -57,7 +57,10 @@ class Agent:
 	# problem.figures - dictionary for figures & solutions
 	
         #Begin Solving
-        print "Working on problem: " + problem.problemType + " " + problem.name
+        if problem.problemType == "3x3":
+            print "Skipping " + problem.problemType + " " + problem.name
+        else:
+           print "Working on problem: " + problem.problemType + " " + problem.name
         
 
         ##compares attributes between objects
@@ -69,15 +72,25 @@ class Agent:
         
             if len(AFrame) == 1 and len(BFrame) ==1:
                 return "one-to-one"
+
+            
                 
         
         #Transformation function. Returns a possible answer in the form of a Frame#
         def ProductionSystemTransformation(relationshipAB, DFrame):
             values={}
+            valueobjectC1={}
+            valueobjectC2={}
             tempA={}
             tempB={}
             temp2={}
+            tmpAkeys = list()
+            tmpBkeys = list()
+            tmpAvalues = list()
+            tmpBvalues = list()
             changeValue=-1
+            
+            
             
             if len(AFrame)==1 and len(BFrame)==1: #if we are working on 1 object in each Frame
                 if AFrame.values() == BFrame.values() and relationshipAB == "one-to-one":
@@ -98,17 +111,11 @@ class Agent:
                         for item in Avalue:
                             AitemValues = item.values()
 
-                        #print AitemValues
-
-                        #print AitemValues[0]
 
                         Bvalue = tempB.values() #change to list data structure
                         for item in Bvalue:
                             BitemValues = item.values()
 
-                        #print BitemValues, "checkpoint"
-
-                        #print AitemValues[0], "checkpoint"
                         
                         for x in range(0,count-1):
                           if AitemValues[x] != BitemValues[x]:
@@ -141,27 +148,53 @@ class Agent:
                                 values['c']['fill'] = changeValue
                             else:
                                 return values
-                        #print changeValue, "change value"
-                        #print nameValue, "name value"
-                        #for item1 in value:
-                        #    time =+ item1
-                        #print item1.values()
-                        #print item1.keys()
-                        #or key, val in tempA.items():
-                          #  temp2 = tempA[key][val]
-                           # print temp2
-                            #for key, val in temp2.values():
-                             #   print temp2[key].values()
-                            #print temp
-                            #print temp.keys()
-                            #print temp.values()
-                        
+                       
                     
                             return values
 
 
             elif len(AFrame)==2 and len(BFrame)==2: #if we are working on 2 objects in each Frame
-                return values
+                for obj in list(A.objects):
+                        tempA[A.objects[obj].name] = A.objects[obj].attributes
+                for k,v in tempA.items():
+                    tmpAkeys.append((k))
+                    tmpAvalues.append( (v) )
+                tmpAkeys.sort() #object items are sorted within a list of tuples
+                tmpAvalues.sort()
+                
+                for obj in list(B.objects):
+                        tempB[B.objects[obj].name] = B.objects[obj].attributes
+                for k,v in tempB.items():
+                    tmpBkeys.append( (k) )
+                    tmpBvalues.append( (v) )
+                tmpBkeys.sort()#object items are sorted within a list of tuples
+                tmpBvalues.sort()
+                
+               
+                x=0
+                if tmpAvalues[0] == tmpBvalues[0]: #a object in Frame A matches c object in Frame B
+                    if tmpAvalues[1] != tmpBvalues[1]:
+                        #find the differences between FrameA and Frame B
+                            if 'shape' in tmpAvalues[1] and 'shape' in tmpBvalues[1]:
+                                if tmpAvalues[1]['shape'] != tmpBvalues[1]['shape']:
+                                    diffvalues['shape'] = tmpAvalues[1]['shape']
+                            if 'fill' in tmpAvalues[1] and 'fill' in tmpBvalues[1]:
+                                if tmpAvalues[1]['fill'] != tmpBvalues[1]['fill']:
+                                    diffAvalues['fill'] = tmpAvalues[1]['fill']
+                            if 'angle' in tmpAvalues[1] and 'angle' in tmpBvalues[1]:
+                                if tmpAvalues[1]['angle'] != tmpBvalues[1]['angle']:
+                                    diffvalues['angle'] = tmpAvalues[1]['angle']
+                            if 'inside' in tmpAvalues[1] and 'inside' in tmpBvalues[1]:
+                                if tmpAvalues[1]['inside'] != tmpBvalues[1]['inside']:
+                                    diffvalues['inside'] = tmpAvalues[1]['inside']
+                            if 'size' in tmpAvalues[1] and 'size' in tmpBvalues[1]:
+                                if tmpAvalues[1]['size'] != tmpBvalues[1]['size']:
+                                    diffvalues['size'] = tmpAvalues[1]['size']
+                            if 'inside' in diffvalues:
+                                for obj in list(C.objects):
+                                    values[C.objects[obj].name] = C.objects[obj].attributes
+                                
+                            return values
 
             else:
                 return values
@@ -176,54 +209,108 @@ class Agent:
                 tmp4 = list()
                 tmp5 = list()
                 tmp6 = list()
-                print "got here"
-                for k,v in possibleAnswer.items():
-                    tmp.append( (v) )
-                tmp.sort()
-                    
-                for k,v in one.items():
-                    tmp1.append( (v) )
-                tmp1.sort()
-                for k,v in two.items():
-                    tmp2.append( (v) )
-                tmp2.sort()
-                for k,v in three.items():
-                    tmp3.append( (v) )
-                tmp3.sort()
-                for k,v in four.items():
-                    tmp4.append( (v) )
-                tmp4.sort()
-                for k,v in five.items():
-                    tmp5.append( (v) )
-                tmp5.sort()
-                for k,v in six.items():
-                    tmp6.append( (v) )
-                tmp6.sort()
                 
-                if tmp == tmp1:
-                    return 1
+                if relationshipAB == "one-to-one":
+                    for k,v in possibleAnswer.items():
+                        tmp.append( (v) )
+                    tmp.sort()
+                    
+                    for k,v in one.items():
+                        tmp1.append( (v) )
+                    tmp1.sort()
+                    for k,v in two.items():
+                        tmp2.append( (v) )
+                    tmp2.sort()
+                    for k,v in three.items():
+                        tmp3.append( (v) )
+                    tmp3.sort()
+                    for k,v in four.items():
+                        tmp4.append( (v) )
+                    tmp4.sort()
+                    for k,v in five.items():
+                        tmp5.append( (v) )
+                    tmp5.sort()
+                    for k,v in six.items():
+                        tmp6.append( (v) )
+                    tmp6.sort()
 
-                elif tmp == tmp2:
-                    return 2
+                
+                    if tmp == tmp1:
+                        return 1
 
-                elif tmp == tmp3:
-                    return 3
+                    elif tmp == tmp2:
+                        return 2
 
-                elif tmp == tmp4:
-                    return 4
+                    elif tmp == tmp3:
+                        return 3
 
-                elif tmp == tmp5:
-                    return 5
+                    elif tmp == tmp4:
+                        return 4
 
-                elif tmp == tmp6:
-                    return 6
+                    elif tmp == tmp5:
+                        return 5
+
+                    elif tmp == tmp6:
+                        return 6
+                    else:
+                        # ProductionSystemProcedural()
+                        #global iteration
+                        #if iteration >= 3:
+                        return random.randint(1,6)
+
+                elif bool(diffvalues) == True:
+                    for k,v in one.items():
+                        tmp1.append( (v) )
+                    tmp1.sort()
+                    for k,v in two.items():
+                        tmp2.append( (v) )
+                    tmp2.sort()
+                    for k,v in three.items():
+                        tmp3.append( (v) )
+                    tmp3.sort()
+                    for k,v in four.items():
+                        tmp4.append( (v) )
+                    tmp4.sort()
+                    for k,v in five.items():
+                        tmp5.append( (v) )
+                    tmp5.sort()
+                    for k,v in six.items():
+                        tmp6.append( (v) )
+                    tmp6.sort()
+                    if 'inside' in diffvalues.keys():
+                        for k,v in possibleAnswer.items():
+                            tmp.append( (v) )
+                        tmp.sort() #Frame of possibleAnswers inside list structure
+                    
+                    if tmp[0] == tmp1[0]:
+                        tmp[1]['inside']=tmp1[1]['inside']
+                        if tmp[1] == tmp1[1]:
+                            return 1
+                    if tmp[0] == tmp2[0]:
+                        tmp[1]['inside']=tmp2[1]['inside']
+                        if tmp[1] == tmp2[1]:
+                            return 2
+                    if tmp[0] == tmp3[0]:
+                        tmp[1]['inside']=tmp3[1]['inside']
+                        if tmp[1] == tmp2[1]:
+                            return 3
+                    if tmp[0] == tmp4[0]:
+                        tmp[1]['inside']=tmp4[1]['inside']
+                        if tmp[1] == tmp4[1]:
+                            return 4
+                    if tmp[0] == tmp2[0]:
+                        tmp[1]['inside']=tmp5[1]['inside']
+                        if tmp[1] == tmp5[1]:
+                            return 5
+                    if tmp[0] == tmp2[0]:
+                        tmp[1]['inside']=tmp6[1]['inside']
+                        if tmp[1] == tmp6[1]:
+                            return 6
+
+                    else:
+                        return random.randint(1,6)
                 else:
-                    ProductionSystemProcedural()
-                    #global iteration
-                    #if iteration >= 3:
                     return random.randint(1,6)
-
-            
 
         def buildFrame():
             
@@ -271,6 +358,8 @@ class Agent:
         four = {}
         five = {}
         six = {}
+        diffvalues = {}
+        
         
         ## Retrieve values from file ##   
         if problem.problemType == "2x2":
@@ -291,7 +380,6 @@ class Agent:
         if problem.hasVerbal: #Verify that we are working on a verbal problem
             relationshipAB = ProductionSystemProcedural()
             possibleAnswer = ProductionSystemTransformation(relationshipAB, DFrame)
-            print possibleAnswer
             answer = GeneraterTester(possibleAnswer)
             print "answer", answer
             
