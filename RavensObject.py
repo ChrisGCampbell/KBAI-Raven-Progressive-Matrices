@@ -1,16 +1,7 @@
 # DO NOT MODIFY THIS FILE.
-#
-# Any modifications to this file will not be used when grading your project.
-# If you have any questions, please email the TAs.
 
-# A single object in a RavensFigure -- typically, a single shape in a frame,
-# such as a triangle or a circle -- comprised of a list of name-value attributes.
 class RavensObject:
-    # Constructs a new RavensObject given a name.
-    #
-    # Your agent does not need to use this method.
-    #
-    # @param name the name of the object
+
     def __init__(self, name):
         # The name of this RavensObject. Names are assigned starting with the
         # letter Z and proceeding backwards in the alphabet through the objects
